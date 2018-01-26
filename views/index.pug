@@ -1,0 +1,6 @@
+extends ./layout.pug
+
+block body
+  form(action="validate" method="post")
+    input(type="text" name="endpoint" placeholder="type your integration fields endpoint here")
+    input(type="submit" value="Scan my api")
