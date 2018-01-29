@@ -1,6 +1,7 @@
 const express = require('express');
 const favicon = require('serve-favicon');
 const path = require('path');
+const request = require('request');
 
 const app = require('./config');
 const PORT = app.get('port');
@@ -12,7 +13,6 @@ app.listen(PORT ,() => {
 });
 
 app.get('/', (req, res) => {
-	//https://prismic-integration.glitch.me/catalogue/v1/works
 	res.render('index');
 });
 
@@ -24,5 +24,5 @@ app.post('/validate', (req, res) => {
 });
 
 setInterval(function() {
-	http.get("https://integration-fields.herokuapp.com/");
+	request("https://integration-fields.herokuapp.com/", function(error, response) {});
 }, 300000); // every 5 minutes (300000)
