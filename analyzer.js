@@ -2,6 +2,7 @@ const request = require('request');
 const R = require('ramda');
 
 const NB_ITEMS_PER_PAGE = 50;
+const CONTENT_TYPE = "application/json";
 
 const pageModel = {
 	results: 'object',
@@ -64,16 +65,26 @@ function queryPage(baseUrl, pageIndex = 1, resolve, res){
 		if(error) resolve(acc);
 		else {
 			try {
-        const body = JSON.parse(response.body);
-        const errors = validatePage(pageIndex, body);
-        jsonWrite(res, {[`page-${pageIndex}`]: errors});
-				if(pageIndex * NB_ITEMS_PER_PAGE < body.results_size) {
-					queryPage(baseUrl, pageIndex + 1, resolve, res);
+				console.log()
+				const contentType = response.headers['content-type'];
+				if(contentType === CONTENT_TYPE) {
+
+					const body = JSON.parse(response.body);
+					const errors = validatePage(pageIndex, body);
+					jsonWrite(res, {[`page-${pageIndex}`]: errors});
+					if(pageIndex * NB_ITEMS_PER_PAGE < body.results_size) {
+						queryPage(baseUrl, pageIndex + 1, resolve, res);
+					} else {
+						jsonWrite(res, `Empty page ${pageIndex}`);
+						resolve();
+					}
 				} else {
+					jsonWrite(res, `Expected content type ${CONTENT_TYPE} but received ${contentType}`)
 					resolve();
 				}
 			} catch(e) {
         console.log(e);
+				jsonWrite(res, `Invalid JSON in page ${pageIndex}: ${e}`);
 				resolve();
 			}
 		}

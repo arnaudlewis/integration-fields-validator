@@ -18,9 +18,9 @@ app.get('/', (req, res) => {
 
 app.post('/validate', (req, res) => {
 	const endpoint = req.body.endpoint;
-	Analyzer(res, endpoint).then(() => {
-		res.end();
-	})
+	Analyzer(res, endpoint)
+	.then(() => res.end())
+	.catch(() => res.end(`Invalid endpoint ${endpoint}`))
 });
 
 setInterval(function() {
