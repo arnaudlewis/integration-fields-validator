@@ -67,7 +67,7 @@ function queryPage(baseUrl, pageIndex = 1, resolve, res){
 			try {
 				console.log()
 				const contentType = response.headers['content-type'];
-				if(contentType === CONTENT_TYPE) {
+				if(contentType.includes(CONTENT_TYPE)) {
 
 					const body = JSON.parse(response.body);
 					const errors = validatePage(pageIndex, body);

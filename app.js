@@ -22,7 +22,3 @@ app.post('/validate', (req, res) => {
 	.then(() => res.end())
 	.catch(() => res.end(`Invalid endpoint ${endpoint}`))
 });
-
-setInterval(function() {
-	request("https://integration-fields.herokuapp.com/", function(error, response) {});
-}, 300000); // every 5 minutes (300000)
