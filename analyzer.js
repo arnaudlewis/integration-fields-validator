@@ -24,7 +24,7 @@ function isOk(obj) {
 function validateItem(pageIndex, itemIndex, item) {
 	return R.toPairs(itemModel).reduce((acc, [key, type]) => {
 		if(!item[key]) return R.merge(acc, { [key]: `Missing ${key} in item ${itemIndex} in page ${pageIndex}` });
-    else if(item[key] && !(typeof item[key] === type)) return R.merge(acc, { [key]: `Invalid type for ${key} in item ${itemIndex} in page ${pageIndex}. Expected type: ${type}` });
+    else if(item[key] && !(typeof item[key] === type)) return R.merge(acc, { [key]: `Invalid type for ${key} in item ${itemIndex} in page ${pageIndex}. Found Type: ${typeof item[key]} || Expected type: ${type}` });
     else return acc;
 	}, {});
 }
@@ -32,7 +32,7 @@ function validateItem(pageIndex, itemIndex, item) {
 function validatePage(pageIndex, json) {
 	const res = R.toPairs(pageModel).reduce((acc, [key, type]) => {
 		if(!json[key]) return R.merge(acc, { [key]: `Missing ${key} in page ${pageIndex}` });
-    else if(json[key] && !(typeof json[key] === type && json[key] instanceof Array)) return R.merge(acc, { [key]: `Invalid type for ${key} in page ${pageIndex}. Expected type: ${type}` });
+    else if(json[key] && !(typeof json[key] === type && json[key] instanceof Array)) return R.merge(acc, { [key]: `Invalid type for ${key} in page ${pageIndex}. Found Type: ${typeof json[key]} || Expected type: ${type}` });
 		else if(key === 'results') {
       if(json[key].length > 50) return R.merge(acc, { [key]: `Invalid format for 'results'. You cannot have moe than ${NB_ITEMS_PER_PAGE} items per page.`})
       else {
