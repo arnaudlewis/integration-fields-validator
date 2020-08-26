@@ -16,9 +16,21 @@ app.get('/', (req, res) => {
 	res.render('index');
 });
 
+function jsonWrite(res, json) {
+  res.write(JSON.stringify(json));
+  res.write('\n\n');
+}
+
 app.post('/validate', (req, res) => {
 	const endpoint = req.body.endpoint;
 	Analyzer(res, endpoint)
-	.then(() => res.end())
-	.catch(() => res.end(`Invalid endpoint ${endpoint}`))
+	.then((report) => {
+		console.log(report)
+		jsonWrite(res, report)
+		res.end()
+	})
+	.catch((e) => {
+		console.log(e)
+		res.end(`Invalid endpoint ${endpoint}`)
+	})
 });
